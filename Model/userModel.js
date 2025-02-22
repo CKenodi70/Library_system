@@ -17,7 +17,11 @@ const userSchema = new mongoose.Schema({
         required: [true, "Please Provide a Password"],
         minlength: 6
     },
-    phone: Number, 
+    phone: {
+        type: String,
+        required: [true, "Please Provide Your Phone Number"],
+        match: [/^[0-9]{10}$/, 'Please provide a valid phone number']
+    },
     role: {
         type: String,
         enum: ['super_admin' ,'admin', 'librarian', 'borrower'],
