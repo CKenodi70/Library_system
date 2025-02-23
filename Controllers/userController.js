@@ -14,7 +14,7 @@ exports.signup = async (req, res) => {
         const { fullName, email, password, phone, role } = req.body;
 
         // Check if all fields are provided
-        if (!fullName || !email || !password || !phone || !role) {
+        if (!fullName || !email || !password || !phone ){
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -35,8 +35,12 @@ exports.signup = async (req, res) => {
         // Sign a JWT token for the new user
         const token = signToken(newUser._id);
 
+          // Exclude the password field from the response
+    const userResponse = newUser.toObject();
+    delete userResponse.password;
+
         // Send success response with token
-        res.status(200).json({ message: "User created successfully", token });
+        res.status(200).json({ message: "User created successfully", token, user: userResponse });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" });
