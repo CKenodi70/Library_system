@@ -1,6 +1,8 @@
+// Import required modules
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // Add this line
 
+// Define the user schema
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
@@ -30,10 +32,14 @@ const userSchema = new mongoose.Schema({
     },
 });
 
+// Pre-save middleware to hash the password
 userSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, 12);
     next();
 });
 
+// Create the User model
 const User = mongoose.model('User', userSchema);
+
+// Export the User model
 module.exports = User;
