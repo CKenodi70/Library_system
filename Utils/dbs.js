@@ -5,6 +5,7 @@ dotenv.config({ path: './config.env' });
 // Import mongoose for MongoDB connection
 const mongoose = require('mongoose');
 
+
 // Function to connect to the MongoDB database
 const connectDB = async () => {
     try {
