@@ -10,6 +10,13 @@ const connectDB = require('./Utils/dbs');
 // Set the port from environment variables or default to 3000
 const PORT = process.env.PORT || 3000;
 
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION! Shutting down...');
+    console.error(err.name, err.message);
+    process.exit(1);
+});
+
 // Test route to check if API is working
 app.get('/test', (req, res) => {
     res.json({ message: 'API Working' });
@@ -21,3 +28,13 @@ connectDB(
         console.log(`Server is running on port ${PORT}`);
     })
 );
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err) => {
+    console.error('UNHANDLED REJECTION! Shutting down...');
+    console.error(err.name, err.message);
+    server.close(() => {
+        process.exit(1);
+    });
+});
+
