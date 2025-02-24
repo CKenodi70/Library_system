@@ -60,10 +60,14 @@ exports.login = async (req, res) => {
 
         // Check if user exists
         const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: "User does not exist" });
+
+        const isMatch = await user.comparePassword(password)
+        console.log(isMatch);
+        if(!user || !isMatch) {
+            return res.status(401).json({ message: "Invalid email or password" });
         }
 
+      
         // Sign a JWT token for the user
         const token = signToken(user._id);
 
@@ -74,3 +78,4 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
